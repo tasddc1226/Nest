@@ -1,0 +1,15 @@
+{
+  "name": "TypeChain",
+  "version": "1.0.0",
+  "description": "Typescript by making a Blockchain with it",
+  "main": "index.js",
+  "repository": "https://github.com/tasddc1226/TypeChain.git",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.3.5"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "prestart": "tsc"
+  }
+}

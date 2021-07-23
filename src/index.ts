@@ -1,13 +1,25 @@
-// Typescript Part 2
-// Types in Typescript
+// Typescript Part 3
+// Interfaces on Typescript
 
-// tsc-watch 를 사용하여 .ts의 내용을 바꿀때마다
-// 컴파일되어 dist의 내용이 바뀐다.
+// 인터페이스 선언
+interface Human {
+    name : string;
+    age : number;
+    gender : string;
+}
 
-const sayHi = (name:string, age:number, gender:string): string => {
-    return (`Hello ${name}, you are ${age}, you are a ${gender}!`);
+const person = {
+    name: "yang su young",
+    age: 25,
+    gender: "male"
 };
 
-console.log(sayHi("Yang", 25, "male"));
+const sayHi = (person : Human): string => {
+    return (`Hi There, ${person.name}, you are ${person.age}, you are a ${person.gender}!`);
+};
+
+// typescript가 person의 type을 Human 인터페이스와 같은지 확인함.
+// 인터페이스는 JS에서 작동을 하지 않는다.
+console.log(sayHi(person));
 
 export {};

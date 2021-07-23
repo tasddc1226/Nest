@@ -1,5 +1,8 @@
-// Typescript Part 5
-// Blockchain Creating a Block
+// Typescript Part 6
+// Blockchain Creating a Block 2
+
+// import crypto-js
+import * as CryptoJS from "crypto-js";
 
 class Block {
     public index: number;
@@ -7,6 +10,16 @@ class Block {
     public previousHash: string;
     public data: string;
     public timestamp: number;
+
+    // 해쉬를 계산하기 위한 static method로 외부에서 호출 가능 & block이 없어도 호출 가능
+    // static 키워드가 없다면 외부에서 호출이 불가능함.
+    static calculateBlockHash = (
+        index:number,
+        previousHash:string,
+        timestamp:number,
+        data:string
+    ) :string => CryptoJS.SHA256(index + previousHash + timestamp + data).toString()
+
     constructor(
         index: number,
         hash: string,
@@ -24,14 +37,13 @@ class Block {
 
 const genesisBlock:Block = new Block(0, "2020202020", "", "Hello", 123456);
 
-// type이 Block인 것만 배열에 추가하도록 함.
-let blockchain: [Block] = [genesisBlock]; 
+let blockchain: Block[] = [genesisBlock]; 
 
-// 따라서 아래는 push가 불가능 type이 Block이 아니기 때문!
-// blockchain.push("stuff");
+const getBlockchain = () : Block[] => blockchain;
 
-console.log(blockchain);
+const getLatestBlock = () : Block => blockchain[blockchain.length - 1];
 
-// 많은 function과 많은 type이 존재할 경우 typescript를 사용하여 실수를 줄일 수 있다.
+const getNewTimeStamp = () : number => Math.round(new Date().getTime() / 1000);
+
 
 export {};

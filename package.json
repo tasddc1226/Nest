@@ -11,5 +11,8 @@
   },
   "scripts": {
     "start": "tsc-watch --onSuccess \" node dist/index.js\" "
+  },
+  "dependencies": {
+    "crypto-js": "^4.1.1"
   }
 }

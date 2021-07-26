@@ -1,33 +1,35 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from '@nestjs/common';
+import { Movie } from './entities/movie.entity';
+import { MoviesService } from './movies.service';
 
 @Controller('movies')
 export class MoviesController {
+    // 서비스를 사용하기 위해서 constructor로 불러옴.
+    constructor(private readonly moviesService: MoviesService) {}
 
     @Get()
-    getAll() {
-        return "This will return all movies!";
+    getAll(): Movie[] {
+        return this.moviesService.getAll();
     }
 
-    @Get('search')
-    search(@Query('year') searchingYear: string){
-        return `we are searching for a movie made after: ${searchingYear}`;
-    }
+    // @Get('search')
+    // search(@Query('year') searchingYear: string){
+    //     return `we are searching for a movie made after: ${searchingYear}`;
+    // }
 
-    // 요청 id를 알고싶을때 @Param 데코레이터를 사용함.
     @Get(":id") 
-    getOne(@Param('id') movieId: string) {
-    return `this will return one movie with the id :${movieId}.`;
+    getOne(@Param('id') movieId: string): Movie {
+        return this.moviesService.getOne(movieId);
     }
 
     @Post()
     create(@Body() movieData) {
-        console.log(movieData);
-        return movieData;
+        return this.moviesService.create(movieData);
     }
 
     @Delete(":id")
     remove(@Param('id') movieId: string){
-        return `this will delete a movie with the id :${movieId}.`;
+        return this.moviesService.deleteOne(movieId);
     }
 
     // 리소스의 일부분만 업데이트 시킴. @Patch

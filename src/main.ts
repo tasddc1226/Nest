@@ -8,7 +8,7 @@ async function bootstrap() {
   // express.js 에서는 미들웨어 처럼..
   app.useGlobalPipes(
     new ValidationPipe({
-      // pipe의 속성을 추가 -> 보안 upgrade
+      // pipe의 속성을 추가 -> 보안 upgrade 아래의 forbidNonWhitelisted 옵션을 사용하기 위해 필요함.
       whitelist: true,
       // 원치 않는 입력이 온다면 해당 리퀘스트 자체를 막아버림.
       forbidNonWhitelisted: true,

@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreateMovieDto } from './dto/create-movie.dto';
 import { Movie } from './entities/movie.entity';
 
 @Injectable()
@@ -9,8 +10,8 @@ export class MoviesService {
         return this.movies;
     }
 
-    getOne(id: string): Movie {
-        const movie = this.movies.find(movie => movie.id === + id);
+    getOne(id: number): Movie {
+        const movie = this.movies.find(movie => movie.id === id);
         // 없는 movieId의 번호를 요청받았다면?
         if (!movie) {
             // Nest에는 아래와 같은 편리한 기능이 있다.
@@ -19,20 +20,20 @@ export class MoviesService {
         return movie;
     }
 
-    deleteOne(id: string){
+    deleteOne(id: number){
         this.getOne(id); // 해당 movieID 값이 존재하는지 확인
-        this.movies = this.movies.filter(movie => movie.id !== + id);
+        this.movies = this.movies.filter(movie => movie.id !== id);
         
     }
 
-    create(movieData){
+    create(movieData: CreateMovieDto){
         this.movies.push({
             id: this.movies.length + 1,
             ...movieData,
         });
     }
 
-    update(id:string, updateData){
+    update(id: number, updateData){
         // updateData의 유효성 검사가 필요함.
         const movie = this.getOne(id);
         this.deleteOne(id);

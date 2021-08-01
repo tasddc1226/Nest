@@ -1,6 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MoviesService } from './movies.service';
 
+// jest라는 도구를 사용하여 실시간으로 유닛 테스트가 가능함
+// >> npm run test:watch
+
 describe('MoviesService', () => {
   let service: MoviesService;
   
@@ -15,7 +18,7 @@ describe('MoviesService', () => {
 
   // it : individual test.. 개별 테스트
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(service).toBeDefined(); // MovieService가 정의 되어 있어야 함.
   });
 
   it('should be 4', () => {

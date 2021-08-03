@@ -73,4 +73,45 @@ describe('MoviesService', () => {
     })
   });
 
+  // Unit test : deleteOne()
+  describe("deleteOne", () => {
+    
+    it("deletes a movie", () => {
+      // 임의의 더미 영화를 create 한다.
+      service.create({
+        title:"Test Movie",
+        genres: ["test"],
+        year: 2000,
+      });
+      // 생성된 영화의 길이 값을 저장
+      const beforeDelete = service.getAll().length; 
+      // deleteOne() 실행
+      service.deleteOne(1);
+      const afterDelete = service.getAll().length;
+      expect(afterDelete).toBeLessThan(beforeDelete);
+    });
+
+    it("should return a 404", () => {
+      try {
+        service.deleteOne(999);
+      } catch (e) {
+        expect(e).toBeInstanceOf(NotFoundException);
+      }
+    });
+  });
+
+  // Unit test : create()
+  describe("create", () => {
+    it ("should create a movie", () => {
+      const beforeCreate = service.getAll().length;
+      service.create({
+        title:"Test Movie",
+        genres: ["test"],
+        year: 2000,
+      });
+      const afterCreate = service.getAll().length;
+      console.log(beforeCreate, afterCreate);
+      expect(afterCreate).toBeGreaterThan(beforeCreate);
+    });
+  });
 });

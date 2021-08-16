@@ -12,6 +12,7 @@ export class MoviesService {
     }
 
     getOne(id: number): Movie {
+        // console.log(typeof id); // server id type : string !, test type : numver !
         const movie = this.movies.find(movie => movie.id === id);
         // 없는 movieId의 번호를 요청받았다면?
         if (!movie) {

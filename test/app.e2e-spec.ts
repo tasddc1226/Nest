@@ -40,7 +40,8 @@ describe('AppController (e2e)', () => {
         .expect(200)
         .expect([]);  // 빈 객체가 나와야 성공.
     });
-    it('POST', () => {
+
+    it('POST 201', () => {
       return request(app.getHttpServer())
         .post('/movies')
         .send({
@@ -50,11 +51,26 @@ describe('AppController (e2e)', () => {
         })
         .expect(201); // 201은 create 성공
     });
+    
     it('DELETE', () => {
       return request(app.getHttpServer())
       .delete('/movies')
       .expect(404);
     });
+  });
+
+  // 잘못된 movie data 형식 Test
+  it('POST 400', () => {
+    return request(app.getHttpServer())
+      .post('/movies')
+      .send({
+        title: 'Test',
+        year: 2000,
+        genres: ['Test'],
+        // wrong data
+        other: 'thing',
+      })
+      .expect(400); 
   });
 
   describe('/movies/:id', () => {
@@ -66,13 +82,25 @@ describe('AppController (e2e)', () => {
       .get('/movies/1') 
       .expect(200);
     });
+
     it('GET 404', () => {
       return request(app.getHttpServer())
       .get('/movies/999') 
       .expect(404);
     });
-    it.todo('DELETE');
-    it.todo('PATCH');
+
+    it('PATCH 200', () => {
+      return request(app.getHttpServer())
+      .patch('/movies/1')
+      .send({ title: 'Updated Test'})
+      .expect(200);
+    });
+
+    it('DELETE 200', () => {
+      return request(app.getHttpServer())
+      .delete('/movies/1')
+      .expect(200);
+    });
   })
 
 });

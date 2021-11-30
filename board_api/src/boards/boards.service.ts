@@ -32,4 +32,13 @@ export class BoardsService {
             throw new NotFoundException(`Can't find Board with id ${id}`)
         }
     }
+
+    async updateBoardStatus(id: number, status: BoardStatus): Promise<Board> {
+        const board = await this.getBoardById(id);
+
+        board.status = status;
+        await this.boardRepository.save(board);
+
+        return board;
+    }
 }

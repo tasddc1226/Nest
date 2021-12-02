@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
@@ -9,6 +10,7 @@ async function bootstrap() {
 
   if (module.hot) {
     module.hot.accept();
+    Logger.log(`Application running on port ${3000}`)
     module.hot.dispose(() => app.close());
   }
 }

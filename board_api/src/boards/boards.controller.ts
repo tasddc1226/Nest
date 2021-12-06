@@ -20,7 +20,7 @@ export class BoardsController {
     getAllBoard(
         @GetUser() user: User
     ): Promise<Board[]> {
-        this.logger.verbose(`User ${user.username} trying to get all boards`);
+        this.logger.verbose(`User "${user.username}" trying to get all boards`);
         return this.boardsService.getAllBoards(user);
     }
 
@@ -29,6 +29,7 @@ export class BoardsController {
         @Param('id', ParseIntPipe) id: number,
         @GetUser() user: User
     ): Promise<Board> {
+        this.logger.verbose(`User "${user.username}" trying to get board id: ${id}`);
         return this.boardsService.getBoardById(id, user);
     }
 
@@ -38,6 +39,8 @@ export class BoardsController {
         @Body() createBoardDto: CreateBoardDto,
         @GetUser() user: User,
     ): Promise<Board> {
+        this.logger.verbose(`User "${user.username}" creating a new board!
+        Payload: ${JSON.stringify(createBoardDto)}`)
         return this.boardsService.createBoard(createBoardDto, user);
     }
 
@@ -46,6 +49,7 @@ export class BoardsController {
         @Param('id', ParseIntPipe) id,
         @GetUser() user: User
     ): Promise<void> {
+        this.logger.verbose(`User "${user.username}" trying to delete board id : ${id}`);
         return this.boardsService.deleteBoard(id, user);
     }
 
@@ -55,6 +59,7 @@ export class BoardsController {
         @Body('status', BoardStatusValidationPipe) status: BoardStatus,
         @GetUser() user: User
     ) {
+        this.logger.verbose(`User "${user.username}" trying to update board status to "${status}"`);
         return this.boardsService.updateBoardStatus(id, status, user);
     }
 

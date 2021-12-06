@@ -7,15 +7,18 @@ export class Board extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column("varchar")
     title: string;
 
-    @Column()
+    @Column("varchar")
     description: string;
 
-    @Column()
+    @Column("varchar")
     status: BoardStatus;
 
     @ManyToOne(type => User, user => user.boards, {eager: false})
     user: User;
+
+    @Column()
+    userId: number;
 }

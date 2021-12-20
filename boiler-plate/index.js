@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-
+const config = require("./config/key");
 const { User } = require("./models/User");
 
 const app = express();
@@ -13,19 +13,16 @@ app.use(bodyParser.json());
 
 const mongoose = require("mongoose");
 mongoose
-  .connect(
-    "mongodb+srv://tasddc:dan9797@bolierplate.xxf1w.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      //useCreateIndex: true,   몽구스 버전이 6.0 이상이면 error 발생
-      //useFindAndModify: false,
-    }
-  )
+  .connect(config.mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    //useCreateIndex: true,   몽구스 버전이 6.0 이상이면 error 발생
+    //useFindAndModify: false,
+  })
   .then(() => console.log("MongoDB Connected.."))
   .catch((err) => console.log(err));
 
-app.get("/", (req, res) => res.send("Hello 앙 귀모링! !!!!"));
+app.get("/", (req, res) => res.send("Hello World!"));
 
 app.post("/signin", (req, res) => {
   // 정보 추출 후 DB에 넣어주기

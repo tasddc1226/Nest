@@ -25,7 +25,7 @@ mongoose
   .then(() => console.log("MongoDB Connected.."))
   .catch((err) => console.log(err));
 
-app.get("/", (req, res) => res.send("Hello World!"));
+app.get("/", (req, res) => res.send("Hello 앙 귀모링! !!!!"));
 
 app.post("/signin", (req, res) => {
   // 정보 추출 후 DB에 넣어주기

@@ -1,6 +1,15 @@
 const express = require("express");
+const bodyParser = require("body-parser");
+
+const { User } = require("./models/User");
+
 const app = express();
 const port = 3000;
+
+// application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+// application/json
+app.use(bodyParser.json());
 
 const mongoose = require("mongoose");
 mongoose
@@ -17,5 +26,17 @@ mongoose
   .catch((err) => console.log(err));
 
 app.get("/", (req, res) => res.send("Hello World!"));
+
+app.post("/signin", (req, res) => {
+  // 정보 추출 후 DB에 넣어주기
+  const user = new User(req.body);
+
+  user.save((err, doc) => {
+    if (err) return res.json({ success: false, err });
+    return res.status(200).json({
+      success: true,
+    });
+  });
+});
 
 app.listen(port, () => console.log(`listening on port ${port}!`));

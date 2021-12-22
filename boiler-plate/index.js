@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const config = require("./config/key");
+const { auth } = require("./middleware/auth");
 const { User } = require("./models/User");
 
 const app = express();
@@ -26,7 +27,7 @@ mongoose
 
 app.get("/", (req, res) => res.send("Hello World!"));
 
-app.post("/signup", (req, res) => {
+app.post("/api/users/signup", (req, res) => {
   // 정보 추출 후 DB에 넣어주기
   const user = new User(req.body);
 
@@ -38,7 +39,7 @@ app.post("/signup", (req, res) => {
   });
 });
 
-app.post("/signin", (req, res) => {
+app.post("/api/users/signin", (req, res) => {
   // 이메일을 DB에서 찾음
   User.findOne({ email: req.body.email }, (err, user) => {
     if (!user) {
@@ -68,5 +69,20 @@ app.post("/signin", (req, res) => {
     });
   });
 });
+
+// role 1 : admin, role 2 : 특정 부서 admin
+// role 0 : normal user, role != 0 : 관리자
+app.get('/api/users/auth', auth, (req, res) => {
+  res.status(200).json({
+    _id: req.user._id,
+    isAdmin: req.user.role === 0 ? false : true,
+    isAuth: true,
+    email: req.user.email,
+    name: req.user.name,
+    lastname: req.user.lastname,
+    role: req.user.role,
+    image: req.user.image
+  })
+})
 
 app.listen(port, () => console.log(`listening on port ${port}!`));

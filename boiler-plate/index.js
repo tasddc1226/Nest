@@ -72,8 +72,10 @@ app.post("/api/users/signin", (req, res) => {
 
 // role 1 : admin, role 2 : 특정 부서 admin
 // role 0 : normal user, role != 0 : 관리자
-app.get('/api/users/auth', auth, (req, res) => {
+app.get("/api/users/auth", auth, (req, res) => {
+  // middleware를 통과한 경우 : Auth가 True
   res.status(200).json({
+    // middleware에서 req에 user와 token을 넣었기 때문에 사용 가능
     _id: req.user._id,
     isAdmin: req.user.role === 0 ? false : true,
     isAuth: true,
@@ -81,8 +83,8 @@ app.get('/api/users/auth', auth, (req, res) => {
     name: req.user.name,
     lastname: req.user.lastname,
     role: req.user.role,
-    image: req.user.image
-  })
-})
+    image: req.user.image,
+  });
+});
 
 app.listen(port, () => console.log(`listening on port ${port}!`));

@@ -1,30 +1,23 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
+import LandingPage from './components/views/LandingPage/LandingPage';
+import LoginPage from './components/views/LoginPage/LoginPage';
+import SignUpPage from './components/views/SignUpPage/SignUpPage'
+
+
 function App() {
   return (
     <BrowserRouter>
       <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul>
-        </nav>
+        
 
         <Routes>
-          <Route path="/about" element={<About />} />
+          <Route path="/login" element={<LoginPage />} />
 
-          <Route path="/users" element={<Users />} />
+          <Route path="/signup" element={<SignUpPage />} />
 
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<LandingPage />} />
         </Routes>
       </div>
     </BrowserRouter>
@@ -32,15 +25,3 @@ function App() {
 }
 
 export default App;
-
-function Home() {
-  return <h2>Home</h2>;
-}
-
-function About() {
-  return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
-}

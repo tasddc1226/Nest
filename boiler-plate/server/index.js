@@ -27,6 +27,10 @@ mongoose
 
 app.get("/", (req, res) => res.send("Hello World!"));
 
+app.get("/api/hello", (req, res) => {
+  res.send("안녕하세요 ~ ")
+})
+
 app.post("/api/users/signup", (req, res) => {
   // 정보 추출 후 DB에 넣어주기
   const user = new User(req.body);

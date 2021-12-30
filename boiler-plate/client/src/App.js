@@ -1,23 +1,24 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import LandingPage from "./components/views/LandingPage/LandingPage";
 import LoginPage from "./components/views/LoginPage/LoginPage";
 import SignUpPage from "./components/views/SignUpPage/SignUpPage";
+import Auth from './hoc/auth';
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <div>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
+        <Switch>
+          <Route exact path="/login" component={Auth(LoginPage, false)} />
 
-          <Route path="/signup" element={<SignUpPage />} />
+          <Route exact path="/signup" component={Auth(SignUpPage, false) } />
 
-          <Route path="/" element={<LandingPage />} />
-        </Routes>
+          <Route exact path="/" component={Auth(LandingPage, null) } />
+        </Switch>
       </div>
-    </BrowserRouter>
+    </Router>
   );
 }
 

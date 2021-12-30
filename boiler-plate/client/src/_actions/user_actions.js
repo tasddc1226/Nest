@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LOGIN_USER } from "./types";
+import { LOGIN_USER, SIGNUP_USER } from "./types";
 
 export function loginUser(dataTosubmit) {
   const request = axios
@@ -12,3 +12,16 @@ export function loginUser(dataTosubmit) {
     payload: request,
   };
 }
+
+export function signupUser(dataTosubmit) {
+  const request = axios
+    .post("/api/users/signup", dataTosubmit)
+    .then((response) => response.data);
+
+  return {
+    // 받은 request를 Reducer로 넘겨줌
+    type: SIGNUP_USER,
+    payload: request,
+  };
+}
+

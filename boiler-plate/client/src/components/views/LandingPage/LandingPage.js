@@ -1,19 +1,18 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { withRouter } from 'react-router-dom';
 
-function LandingPage() {
-  let navigate = useNavigate();
+function LandingPage(props) {
 
   useEffect(() => {
     axios.get("/api/hello").then((response) => console.log(response.data));
   }, []);
 
   const onClickHandler = () => {
-    axios.get(`/api/users/logout`).then(response => {
+    axios.get('/api/users/logout').then(response => {
       if(response.data.success) {
         alert('로그아웃 성공! 로그인 페이지로 이동합니다.');
-        navigate("/login");
+        props.history.push("/login")
       } else {
         alert('로그아웃 실패!');
       }
@@ -37,4 +36,4 @@ function LandingPage() {
   );
 }
 
-export default LandingPage;
+export default withRouter(LandingPage)

@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signupUser } from "../../../_actions/user_actions";
-import { useNavigate } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 
 function SignUpPage(props) {
 
   const dispatch = useDispatch();
-  let navigate = useNavigate();
 
   const [Email, setEmail] = useState("");
   const [Name, setName] = useState("");
@@ -46,7 +45,7 @@ function SignUpPage(props) {
     dispatch(signupUser(body)).then((response) => {
       if(response.payload.success) {
         alert('회원가입 성공! 로그인 페이지로 이동합니다.');
-        navigate('/login');
+        props.history.push('/login');
       } else {
         alert('이미 존재하는 회원입니다.');
       }
@@ -86,4 +85,4 @@ function SignUpPage(props) {
   )
 }
 
-export default SignUpPage;
+export default withRouter(SignUpPage)

@@ -12,8 +12,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.use('/api/users', require('./routes/users'));
-app.use('/api/favorite', require('./routes/favorite'));
+app.use("/api/users", require("./routes/users"));
+app.use("/api/favorite", require("./routes/favorite"));
 
 const mongoose = require("mongoose");
 mongoose
@@ -29,8 +29,7 @@ mongoose
 app.get("/", (req, res) => res.send("Hello World!"));
 
 app.get("/api/hello", (req, res) => {
-  res.send("안녕하세요 ~ ")
-})
-
+  res.send("안녕하세요 ~ ");
+});
 
 app.listen(port, () => console.log(`listening on port ${port}!`));

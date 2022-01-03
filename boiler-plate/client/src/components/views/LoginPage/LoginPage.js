@@ -2,7 +2,7 @@ import { Axios } from "axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../../_actions/user_actions";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 
 function LoginPage(props) {
   const dispatch = useDispatch();
@@ -28,9 +28,9 @@ function LoginPage(props) {
 
     dispatch(loginUser(body)).then((response) => {
       if (response.payload.loginSuccess) {
-        window.localStorage.setItem('userId', response.payload.userId);
+        window.localStorage.setItem("userId", response.payload.userId);
         // root page로 redirection
-        props.history.push('/');
+        props.history.push("/");
       } else {
         alert("error!");
       }
@@ -63,4 +63,4 @@ function LoginPage(props) {
   );
 }
 
-export default withRouter(LoginPage)
+export default withRouter(LoginPage);

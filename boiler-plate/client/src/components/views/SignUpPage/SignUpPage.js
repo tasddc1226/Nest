@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signupUser } from "../../../_actions/user_actions";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 
 function SignUpPage(props) {
-
   const dispatch = useDispatch();
 
   const [Email, setEmail] = useState("");
   const [Name, setName] = useState("");
   const [Password, setPassword] = useState("");
   const [ConfirmPassword, setConfirmPassword] = useState("");
-  
 
   const onEmailHandler = (event) => {
     setEmail(event.currentTarget.value);
@@ -33,7 +31,7 @@ function SignUpPage(props) {
     evnet.preventDefault(); // page refresh 막아주기
 
     if (Password !== ConfirmPassword) {
-      return alert('비밀번호가 다릅니다.')
+      return alert("비밀번호가 다릅니다.");
     }
 
     let body = {
@@ -43,11 +41,11 @@ function SignUpPage(props) {
     };
 
     dispatch(signupUser(body)).then((response) => {
-      if(response.payload.success) {
-        alert('회원가입 성공! 로그인 페이지로 이동합니다.');
-        props.history.push('/login');
+      if (response.payload.success) {
+        alert("회원가입 성공! 로그인 페이지로 이동합니다.");
+        props.history.push("/login");
       } else {
-        alert('이미 존재하는 회원입니다.');
+        alert("이미 존재하는 회원입니다.");
       }
     });
   };
@@ -76,13 +74,17 @@ function SignUpPage(props) {
         <input type="password" value={Password} onChange={onPasswordHandler} />
 
         <label>Confirm Password</label>
-        <input type="password" value={ConfirmPassword} onChange={onConfirmPasswordHandler} />
+        <input
+          type="password"
+          value={ConfirmPassword}
+          onChange={onConfirmPasswordHandler}
+        />
 
         <br />
         <button type="submit">Sign Up</button>
       </form>
     </div>
-  )
+  );
 }
 
-export default withRouter(SignUpPage)
+export default withRouter(SignUpPage);

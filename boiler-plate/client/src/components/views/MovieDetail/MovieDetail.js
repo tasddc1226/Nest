@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { API_KEY, API_URL, IMAGE_BASE_URL } from "../../../Config";
+import { API_KEY, API_URL, IMAGE_BASE_URL } from "../../Config";
 import MainImage from "../LandingPage/Sections/MainImage";
 import MovieInfo from "./Sections/MovieInfo";
 import GridCards from "../commons/GridCards";

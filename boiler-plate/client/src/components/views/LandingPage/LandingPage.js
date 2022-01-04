@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Row } from 'antd';
-import { API_KEY, API_URL, IMAGE_BASE_URL } from "../../../Config";
+import { API_KEY, API_URL, IMAGE_BASE_URL } from "../../Config";
 import MainImage from "./Sections/MainImage";
 import GridCards from "../commons/GridCards";
 

@@ -7,6 +7,7 @@ import NavBar from "./views/NavBar/NavBar";
 import SignUpPage from "./views/SignUpPage/SignUpPage";
 import Auth from "../hoc/auth";
 import MovieDetail from "./views/MovieDetail/MovieDetail";
+import FavoritePage from "./views/FavoritePage/FavoritePage";
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
           <Route exact path="/signup" component={Auth(SignUpPage, false)} />
 
           <Route exact path="/" component={Auth(LandingPage, null)} />
+
+          <Route exact path="/favorite" component={Auth(FavoritePage, true)} />
         </Switch>
       </div>
     </Router>

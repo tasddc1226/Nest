@@ -1,5 +1,6 @@
-import { Axios } from "axios";
-import React, { useEffect } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Button } from "antd";
 
 function Favorite(props) {
   const movieId = props.movieId;
@@ -8,24 +9,37 @@ function Favorite(props) {
   const moviePost = props.movieInfo.backdrop_path;
   const movieRunTime = props.movieInfo.runtime;
 
-  let variables = {
-    userFrom,
-    movieId,
-  };
+  const [FavoriteNumber, setFavoriteNumber] = useState(0)
+  const [Favorited, setFavorited] = useState(false)
 
-  //   useEffect(() => {
-  //     Axios.post("/api/favorite/favoriteNumber", variables).then((response) => {
-  //       console.log(response.data);
-  //       if (response.data.success) {
-  //       } else {
-  //         alert("숫자 정보를 가져오는데 실패했습니다.");
-  //       }
-  //     });
-  //   }, []);
+  
+  useEffect(() => {
+      let variables = {
+        userFrom,
+        movieId,
+      };
+      axios.post("/api/favorite/favoriteNumber", variables).then(response => {
+        if (response.data.success) {
+          setFavoriteNumber(response.data.favoriteNumber)
+        } else {
+          alert("숫자 정보를 가져오는데 실패했습니다.");
+        }
+      });
+
+      axios.post("/api/favorite/favorited", variables).then(response => {
+        if (response.data.success) {
+          setFavorited(response.data.favorited)
+
+        } else {
+          alert("정보를 가져오는데 실패했습니다.");
+        }
+      });
+
+    }, []);
 
   return (
     <div>
-      <button>Favorite</button>
+      <Button>{Favorited ? "Not Favorite" : "Add to Favorite"} {FavoriteNumber}</Button>
     </div>
   );
 }

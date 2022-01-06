@@ -1,25 +1,46 @@
-import React, { useEffect, useState } from "react";
-import "./favorite.css";
-import axios from "axios";
-import { Popover } from "antd";
-import { IMAGE_BASE_URL } from "../../Config";
+import React, { useEffect, useState } from 'react'
+import './favorite.css'
+import axios from 'axios'
+import { Popover, Button } from 'antd'
+import { IMAGE_BASE_URL } from '../../Config'
 
 function FavoritePage() {
-  const [Favorites, setFavorites] = useState([]);
+  const [Favorites, setFavorites] = useState([])
 
   useEffect(() => {
+    fetchFavoritedMovie()
+  }, [])
+
+  const fetchFavoritedMovie = () => {
     axios
-      .post("/api/favorite/getFavoritedMovie", {
-        userFrom: localStorage.getItem("userId"),
+      .post('/api/favorite/getFavoritedMovie', {
+        userFrom: localStorage.getItem('userId'),
       })
       .then((response) => {
         if (response.data.success) {
-          setFavorites(response.data.favorites);
+          setFavorites(response.data.favorites)
         } else {
-          alert("영화 정보를 가져오는데 실패했습니다.");
+          alert('영화 정보를 가져오는데 실패했습니다.')
         }
-      });
-  }, []);
+      })
+  }
+
+  const onClickDelete = (movieId, userFrom) => {
+    const variables = {
+      movieId,
+      userFrom,
+    }
+
+    axios
+      .post('api/favorite/removeFromFavorite', variables)
+      .then((response) => {
+        if (response.data.success) {
+          fetchFavoritedMovie()
+        } else {
+          alert('리스트에서 지우는데 실패했습니다.')
+        }
+      })
+  }
 
   const renderCards = Favorites.map((favorite, index) => {
     const content = (
@@ -27,10 +48,10 @@ function FavoritePage() {
         {favorite.moviePost ? (
           <img src={`${IMAGE_BASE_URL}w500${favorite.moviePost}`} />
         ) : (
-          "NO IMAGE"
+          'NO IMAGE'
         )}
       </div>
-    );
+    )
 
     return (
       <tr key={index}>
@@ -40,14 +61,18 @@ function FavoritePage() {
 
         <td>{favorite.movieRunTime} mins</td>
         <td>
-          <button>remove</button>
+          <Button
+            onClick={() => onClickDelete(favorite.movieId, favorite.userFrom)}
+          >
+            remove
+          </Button>
         </td>
       </tr>
-    );
-  });
+    )
+  })
 
   return (
-    <div style={{ width: "85%", margin: "3rem auto" }}>
+    <div style={{ width: '85%', margin: '3rem auto' }}>
       <h2>Favorite Movies</h2>
       <hr />
 
@@ -63,7 +88,7 @@ function FavoritePage() {
         <tbody>{renderCards}</tbody>
       </table>
     </div>
-  );
+  )
 }
 
-export default FavoritePage;
+export default FavoritePage

@@ -6,6 +6,7 @@ import MovieInfo from "./Sections/MovieInfo";
 import GridCards from "../commons/GridCards";
 import Favorite from "./Sections/Favorite";
 import { Row, Button } from "antd";
+import Comment from "./Sections/Comment";
 
 function MovieDetail(props) {
   const { movieId } = useParams();
@@ -60,6 +61,12 @@ function MovieDetail(props) {
         <MovieInfo movie={Movie} />
 
         <br />
+
+        {/* Comments */}
+        <Comment movieId={movieId} />
+
+        <br />
+
         {/* Actors Grid */}
 
         <div

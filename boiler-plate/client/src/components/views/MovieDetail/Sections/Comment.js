@@ -1,9 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import SingleComment from "./SingleComment";
 
 function Comment(props) {
-  const movieId = props.movieId;
+  //   const movieId = props.movieId;
   const user = useSelector((state) => state.user);
   const [commentValue, setcommentValue] = useState("");
   const handleClick = (event) => {
@@ -16,12 +17,15 @@ function Comment(props) {
     const variables = {
       content: commentValue,
       writer: user.userData._id,
-      movieId: movieId,
+      movieId: props.movieId,
     };
 
     axios.post("/api/comment/saveComment", variables).then((response) => {
       if (response.data.success) {
         console.log(response.data.result);
+        // MovieDetail의 Comments를 update
+        props.refreshFunction(response.data.result);
+        setcommentValue("");
       } else {
         alert("댓글을 저장하는데 실패했습니다..!");
       }
@@ -35,6 +39,17 @@ function Comment(props) {
       <hr />
 
       {/* Comment Lists */}
+      {props.commentLists &&
+        props.commentLists.map(
+          (comment, index) =>
+            !comment.responseTo && (
+              <SingleComment
+                refreshFunction={props.refreshFunction}
+                comment={comment}
+                movieId={props.movieId}
+              />
+            )
+        )}
 
       {/* Root Comment Form */}
 

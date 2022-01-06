@@ -7,12 +7,15 @@ import GridCards from "../commons/GridCards";
 import Favorite from "./Sections/Favorite";
 import { Row, Button } from "antd";
 import Comment from "./Sections/Comment";
+import axios from "axios";
 
 function MovieDetail(props) {
   const { movieId } = useParams();
+  const variable = { movieId: movieId };
   const [Movie, setMovie] = useState([]);
   const [Casts, setCasts] = useState([]);
   const [ActorToggle, setActorToggle] = useState(false);
+  const [Comments, setComments] = useState([]);
 
   useEffect(() => {
     // console.log(movieId)
@@ -30,7 +33,20 @@ function MovieDetail(props) {
       .then((response) => {
         setCasts(response.cast);
       });
+
+    axios.post("/api/comment/getComments", variable).then((response) => {
+      if (response.data.success) {
+        setComments(response.data.comments);
+        console.log(response.data.comments);
+      } else {
+        alert("댓글 정보를 가져오는데 실패하였습니다..!");
+      }
+    });
   }, []);
+
+  const updateComment = (newComment) => {
+    setComments(Comments.concat(newComment));
+  };
 
   const toggleActorView = () => {
     setActorToggle(!ActorToggle);
@@ -63,7 +79,11 @@ function MovieDetail(props) {
         <br />
 
         {/* Comments */}
-        <Comment movieId={movieId} />
+        <Comment
+          refreshFunction={updateComment}
+          commentLists={Comments}
+          movieId={movieId}
+        />
 
         <br />
 

@@ -8,6 +8,7 @@ import Favorite from "./Sections/Favorite";
 import { Row, Button } from "antd";
 import Comment from "./Sections/Comment";
 import axios from "axios";
+import LikeDislikes from "./Sections/LikeDislikes";
 
 function MovieDetail(props) {
   const { movieId } = useParams();
@@ -66,6 +67,12 @@ function MovieDetail(props) {
       {/* body */}
       <div style={{ width: "85%", margin: "1rem auto" }}>
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <LikeDislikes
+            movie
+            userId={localStorage.getItem("userId")}
+            movieId={movieId}
+          />
+          &nbsp;&nbsp;
           <Favorite
             movieInfo={Movie}
             movieId={movieId}

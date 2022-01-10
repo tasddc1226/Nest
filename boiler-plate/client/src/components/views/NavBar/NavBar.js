@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import LeftMenu from "./Sections/LeftMenu";
 import RightMenu from "./Sections/RightMenu";
-import { Drawer, Button, Image } from "antd";
+import { Drawer, Button } from "antd";
+import { Icon } from "@ant-design/icons";
 import "./Sections/NavBar.css";
 import mainlogo from "../../../assets/images/mainlogo.png";
 
@@ -23,7 +24,7 @@ function NavBar() {
     >
       <div className="menu__logo img">
         <a href="/">
-          <img src={mainlogo} />
+          <img src={mainlogo} style={{ width: "100%", marginTop: "-5px" }} />
         </a>
       </div>
       <div className="menu__container">
@@ -38,7 +39,7 @@ function NavBar() {
           type="primary"
           onClick={showDrawer}
         >
-          <Image type="align-right" />
+          <Icon type="align-right" />
         </Button>
         <Drawer
           title="Basic Drawer"

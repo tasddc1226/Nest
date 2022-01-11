@@ -1,13 +1,13 @@
-import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import React from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-import LandingPage from "./views/LandingPage/LandingPage";
-import LoginPage from "./views/LoginPage/LoginPage";
-import NavBar from "./views/NavBar/NavBar";
-import SignUpPage from "./views/SignUpPage/SignUpPage";
-import Auth from "../hoc/auth";
-import MovieDetail from "./views/MovieDetail/MovieDetail";
-import FavoritePage from "./views/FavoritePage/FavoritePage";
+import LandingPage from './views/LandingPage/LandingPage'
+import LoginPage from './views/LoginPage/LoginPage'
+import NavBar from './views/NavBar/NavBar'
+import SignUpPage from './views/SignUpPage/SignUpPage'
+import Auth from '../hoc/auth'
+import MovieDetail from './views/MovieDetail/MovieDetail'
+import FavoritePage from './views/FavoritePage/FavoritePage'
 
 function App() {
   return (
@@ -31,7 +31,7 @@ function App() {
         </Switch>
       </div>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App

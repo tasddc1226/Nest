@@ -1,40 +1,66 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import md5 from "md5";
+import firebase from "../../firebase";
 
 function RegisterPage() {
-  const {
-    register,
-    watch,
-    formState: { errors },
-    handleSubmit,
-  } = useForm({});
-
+  const { register, watch, errors, handleSubmit } = useForm();
   const [errorFromSubmit, seterrorFromSubmit] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const password = useRef();
   password.current = watch("password");
 
-  console.log(watch("email"));
+  const onSubmit = async (data) => {
+    // console.log("data", data);
+    try {
+      setLoading(true);
+
+      let createdUser = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(data.email, data.password);
+      console.log("createdUser", createdUser);
+
+      await createdUser.user.updateProfile({
+        displayName: data.name,
+        photoURL: `http://gravatar.com/avatar/${md5(
+          createdUser.user.email
+        )}?d=identicon`,
+      });
+
+      //Firebase 데이터베이스에 저장해주기
+      await firebase.database().ref("users").child(createdUser.user.uid).set({
+        name: createdUser.user.displayName,
+        image: createdUser.user.photoURL,
+      });
+
+      setLoading(false);
+    } catch (err) {
+      seterrorFromSubmit(err.message);
+      setLoading(false);
+      setTimeout(() => {
+        seterrorFromSubmit("");
+      }, 5000);
+    }
+  };
+
   return (
     <div className="auth-wrapper">
       <div style={{ textAlign: "center" }}>
         <h3>Register</h3>
       </div>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <label>Email</label>
         <input
           name="email"
           type="email"
-          {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
+          ref={register({ required: true, pattern: /^\S+@\S+$/i })}
         />
-        {errors.email && <p>Email field is required</p>}
+        {errors.email && <p>This email field is required</p>}
 
         <label>Name</label>
-        <input
-          name="name"
-          {...register("name", { required: true, maxLength: 10 })}
-        />
+        <input name="name" ref={register({ required: true, maxLength: 10 })} />
         {errors.name && errors.name.type === "required" && (
           <p>This name field is required</p>
         )}
@@ -46,7 +72,7 @@ function RegisterPage() {
         <input
           name="password"
           type="password"
-          {...register("password", { required: true, minLength: 6 })}
+          ref={register({ required: true, minLength: 6 })}
         />
         {errors.password && errors.password.type === "required" && (
           <p>This password field is required</p>
@@ -59,7 +85,7 @@ function RegisterPage() {
         <input
           name="password_confirm"
           type="password"
-          {...register("password_confirm", {
+          ref={register({
             required: true,
             validate: (value) => value === password.current,
           })}
@@ -73,7 +99,9 @@ function RegisterPage() {
             <p>The passwords do not match</p>
           )}
 
-        <input type="submit" />
+        {errorFromSubmit && <p>{errorFromSubmit}</p>}
+
+        <input type="submit" disabled={loading} />
         <Link style={{ color: "gray", textDecoration: "none" }} to="login">
           이미 회원이신가요?
         </Link>

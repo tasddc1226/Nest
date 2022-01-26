@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import firebase from "../../../firebase";
 import { connect } from "react-redux";
+import { setCurrentChatRoom } from "../../../redux/actions/chatRoom_action";
 
 export class ChatRooms extends Component {
   state = {
@@ -38,7 +39,14 @@ export class ChatRooms extends Component {
   // 입력한 방 정보가 있는지 유효성 check 함수
   isFormValid = (name, description) => name && description;
 
-  setFirstChatRoom = () => {};
+  setFirstChatRoom = () => {
+    const firstChatRoom = this.state.chatRooms[0];
+    if (this.state.firstLoad && this.state.chatRooms.length > 0) {
+      this.props.dispatch(setCurrentChatRoom(firstChatRoom));
+      this.setState({ activeChatRoomId: firstChatRoom.id });
+    }
+    this.setState({ firstLoad: false });
+  };
 
   // 대화방 추가에 대한 리스너 함수로 firebase에 저장된 데이터를 실시간으로 받을 수 있음
   AddChatRoomsListeners = () => {
@@ -49,6 +57,7 @@ export class ChatRooms extends Component {
       chatRoomsArray.push(DataSnapshot.val());
       // console.log("chatRoomsArray", chatRoomsArray);
       this.setState({ chatRooms: chatRoomsArray }, () =>
+        // 첫번째 page load 시 가장 위에있는 대화방을 가리키도록 함
         this.setFirstChatRoom()
       );
     });
@@ -86,7 +95,24 @@ export class ChatRooms extends Component {
   // 현재 존재하는 모든 대화방을 rendering 하는 함수
   renderChatRooms = (chatRooms) =>
     chatRooms.length > 0 &&
-    chatRooms.map((room) => <li key={room.id}># {room.name}</li>);
+    chatRooms.map((room) => (
+      <li
+        key={room.id}
+        style={{
+          backgroundColor:
+            room.id === this.state.activeChatRoomId && "#ffffff45",
+        }}
+        onClick={() => this.changeChatRoom(room)}
+      >
+        # {room.name}
+      </li>
+    ));
+
+  // Click된 Room의 정보를 Redux에 저장하는 함수
+  changeChatRoom = (room) => {
+    this.props.dispatch(setCurrentChatRoom(room));
+    this.setState({ activeChatRoomId: room.id });
+  };
 
   render() {
     return (

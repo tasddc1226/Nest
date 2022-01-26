@@ -51,7 +51,8 @@ function UserPanel() {
         .database()
         .ref("users")
         .child(user.uid)
-        .update({ image: downloadURL });
+        .update({ image: downloadURL })
+        .then(alert("프로필 사진 변경 완료"));
     } catch (error) {
       alert(error);
     }

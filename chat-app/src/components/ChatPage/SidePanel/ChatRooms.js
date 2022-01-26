@@ -22,6 +22,10 @@ export class ChatRooms extends Component {
     this.AddChatRoomsListeners();
   }
 
+  componentWillUnmount() {
+    this.state.chatRoomsRef.off();
+  }
+
   //
   handleClose = () => this.setState({ show: false });
   handleShow = () => this.setState({ show: true });

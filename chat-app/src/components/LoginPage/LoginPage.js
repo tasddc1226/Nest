@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import md5 from "md5";
 import firebase from "../../firebase";
 
 function LoginPage() {

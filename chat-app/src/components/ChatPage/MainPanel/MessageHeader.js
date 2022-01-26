@@ -12,7 +12,8 @@ import { RiLockUnlockLine } from "react-icons/ri";
 import { MdFavorite } from "react-icons/md";
 import { AiOutlineSearch } from "react-icons/ai";
 
-function MessageHeader() {
+// 부모의 trigger 함수를 인자로 받아옴
+function MessageHeader({ handleSearchChange }) {
   return (
     <div
       style={{
@@ -39,6 +40,8 @@ function MessageHeader() {
                 <AiOutlineSearch />
               </InputGroup.Text>
               <FormControl
+                // 부모 trigger 함수 사용
+                onChange={handleSearchChange}
                 placeholder="대화 내용 검색"
                 aria-label="Search"
                 aria-describedby="basic-addon1"

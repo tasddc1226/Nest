@@ -51,9 +51,9 @@ function MessageForm() {
     // firebase에 data를 저장하는 부분
     try {
       await messagesRef.child(chatRoom.id).push().set(createMessage());
-      setLoading(false);
       setContent("");
       setErrors([]);
+      setLoading(false);
     } catch (error) {
       setErrors((prev) => prev.concat(error.message));
       setLoading(false);
@@ -145,7 +145,7 @@ function MessageForm() {
           <button
             onClick={handleSubmit}
             className="message-form-button"
-            style={{ width: "100%" }}
+            style={{ width: "100%", borderRadius: "15px" }}
             disabled={loading ? true : false}
           >
             SEND
@@ -155,7 +155,7 @@ function MessageForm() {
           <button
             onClick={handleOpenImageRef}
             className="message-form-button"
-            style={{ width: "100%" }}
+            style={{ width: "100%", borderRadius: "15px" }}
             disabled={loading ? true : false}
           >
             UPLOAD

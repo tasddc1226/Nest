@@ -16,7 +16,7 @@ function App() {
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
-      console.log("user", user);
+      // console.log("user", user);
       // login 성공
       if (user) {
         history.push("/");

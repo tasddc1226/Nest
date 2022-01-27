@@ -3,7 +3,7 @@ import MessageHeader from "./MessageHeader";
 import Message from "./Message";
 import MessageForm from "./MessageForm";
 import { connect } from "react-redux";
-import firebase from "firebase";
+import firebase from "../../../firebase";
 
 export class MainPanel extends Component {
   state = {

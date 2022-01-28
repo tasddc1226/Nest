@@ -30,7 +30,7 @@ function Message({ message, user }) {
           backgroundColor: isMessageMine(message, user) && "#ECECEC",
         }}
       >
-        <h6>
+        <h6 style={{ fontWeight: "bold" }}>
           {message.user.name}{" "}
           <span style={{ fontSize: "7px", color: "gray" }}>
             {timeFromNow(message.timestamp)}

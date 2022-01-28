@@ -31,7 +31,7 @@ body {
   margin: 0 auto;
 }
 
-.auth-wrapper p {
+.auth-wrapper .p {
   color: #bf1650;
 }
 
@@ -55,14 +55,14 @@ body {
   line-height: 2;
   text-align: left;
   display: block;
-  margin: 5px 0;
-  color: black;
+ margin: 5px 0 ;
   font-size: 14px;
   font-weight: 200;
 }
 
-.message-form-button {
-  background: #7a84eb;
+.auth-wrapper button[type="submit"],
+.auth-wrapper input[type="submit"] {
+  background: #7A84EB;
   color: white;
   text-transform: uppercase;
   border: none;
@@ -128,7 +128,7 @@ body {
   border-radius: 4px;
 }
 
-.auth-wrapper hr {
+hr {
   margin-top: 30px;
 }
 

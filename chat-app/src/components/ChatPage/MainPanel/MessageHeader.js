@@ -8,12 +8,17 @@ import Image from "react-bootstrap/Image";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import { RiLockUnlockLine } from "react-icons/ri";
+import { RiLockUnlockLine, RiLockLine } from "react-icons/ri";
 import { MdFavorite } from "react-icons/md";
 import { AiOutlineSearch } from "react-icons/ai";
+import { useSelector } from "react-redux";
 
 // 부모의 trigger 함수를 인자로 받아옴
 function MessageHeader({ handleSearchChange }) {
+  const chatRoom = useSelector((state) => state.chatRoom.currentChatRoom);
+  const isPrivateChatRoom = useSelector(
+    (state) => state.chatRoom.isPrivateChatRoom
+  );
   return (
     <div
       style={{
@@ -29,8 +34,8 @@ function MessageHeader({ handleSearchChange }) {
         <Row>
           <Col>
             <h2>
-              <RiLockUnlockLine />
-              &nbsp;채팅방 이름&nbsp;
+              {isPrivateChatRoom ? <RiLockLine /> : <RiLockUnlockLine />}
+              &nbsp;{chatRoom && chatRoom.name}&nbsp;
               <MdFavorite />
             </h2>
           </Col>

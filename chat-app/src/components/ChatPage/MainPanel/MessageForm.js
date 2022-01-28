@@ -11,6 +11,9 @@ function MessageForm() {
   // 현재 자신이 속해있는 채널의 정보를 가져옴
   const chatRoom = useSelector((state) => state.chatRoom.currentChatRoom);
   const user = useSelector((state) => state.user.currentUser);
+  const isPrivateChatRoom = useSelector(
+    (state) => state.chatRoom.isPrivateChatRoom
+  );
   const [content, setContent] = useState("");
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -67,10 +70,19 @@ function MessageForm() {
     inputOpenImageRef.current.click();
   };
 
+  const getPath = () => {
+    if (isPrivateChatRoom) {
+      // private storage 폴더에 이미지를 저장하기 위한 경로
+      return `/message/private/${chatRoom.id}`;
+    } else {
+      return `/message/public`;
+    }
+  };
+
   const handleUploadImage = (event) => {
     const file = event.target.files[0];
     if (!file) return;
-    const filePath = `message/public/${file.name}`;
+    const filePath = `${getPath()}/${file.name}`;
     const metadata = { contentType: mime.lookup(file.name) };
     setLoading(true);
     try {

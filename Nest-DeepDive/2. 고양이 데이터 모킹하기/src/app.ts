@@ -1,55 +1,56 @@
 import * as express from "express";
-import { Cat, CatType } from "./app.model";
+import catsRouter from "./cats/cats.route";
 
-const app: express.Express = express()
-const port: number = 8000;
+class Server {
+	public app: express.Application
 
-// 미들웨어 생성
-// : app.use로 모든 라우터를 관리해주는 미들웨어를 만들기 위함
-// : endpoint를 찾기 전에 수행되어야 하기 때문에 가장 끝에 있다면 수행되어지지 않음.
-// : 하지만 항상 최상단에 존재하지 않아도 됨.
-app.use((req, res, next) => {
-	// logging을 수행하는 로직
-	// 각 라우터에서 중복 수행하는 부분을 미들웨어로 추출
-	console.log(req.rawHeaders[1]);
+	constructor() {
+		const app: express.Application = express();
+		this.app = app;
+	}
 
-	// do somthing
-	console.log('this is logging middleware');
+	// 각각의 Route에 관련된 middleware
+	private setRoute() {
+		this.app.use(catsRouter);
+	}
 
-	// 다음 라우터로 이동시키기
-	next();
+	private setMiddleware() {
 
-})
+		// * logging middleware
+		this.app.use((req, res, next) => {
+			console.log('this is logging middleware');
+			next();
+		})
 
-// 특정 라우터에 대한 미들웨어 생성
-app.get('/cats/som', (req, res, next) => {
-	// do somthing
-	console.log('this is /cats/som middleware');
-	next();
+		// * req의 body에 있는 json 객체를 읽을 수 있도록 하는 json middleware
+		this.app.use(express.json());
 
-})
+		this.setRoute();
 
-app.get('/', (req: express.Request, res: express.Response) => {
-	//console.log(req.rawHeaders[1]);
-	res.send({ Cats: Cat })
-})
+		// 404 middleware
+		this.app.use((req, res, next) => {
+			console.log('this is error middleware');
+			res.send({ error: "404 Not Found Error!" })
+		})
+	}
 
-app.get('/cats/blue', (req: express.Request, res: express.Response) => {
-	//console.log(req.rawHeaders[1]);
-	res.send({ blue: Cat[0] })
-})
+	public listen() {
+		// setting middleware
+		this.setMiddleware();
+		const port: number = 8000;
+		this.app.listen(port, () => {
+			console.log(`app server listening on http://localhost:${port}`)
+		})
+	}
+}
 
-app.get('/cats/som', (req: express.Request, res: express.Response) => {
-	//console.log(req.rawHeaders[1]);
-	res.send({ som: Cat[1] })
-})
+function init() {
+	// Server 싱글톤 인스턴스 생성
+	const server = new Server();
+	server.listen();
+}
 
-// 요청한 endpoint를 찾지 못한 경우 동작되어지는 미들웨어
-app.use((req, res, next) => {
-	console.log('this is not found middleware');
-	res.send({ error: "404 Not Found Error!" })
-})
+init();
 
-app.listen(port, () => {
-	console.log(`app server listening on http://localhost:${port}`)
-})
+
+

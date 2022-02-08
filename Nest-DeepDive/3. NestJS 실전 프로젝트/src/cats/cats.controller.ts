@@ -1,49 +1,54 @@
+import { CatRequestDto } from './dto/cats.request.dto';
 import { CatsService } from './cats.service';
-import { Controller, Delete, Get, HttpException, Patch, Post, Put, UseFilters, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Delete, Get, HttpException, Patch, Post, Put, UseFilters, Param, ParseIntPipe, Body } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/http-exception.filter';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ReadOnlyCatDto } from './dto/cat.dto';
 
 @Controller('cats')
-@UseFilters(HttpExceptionFilter) // 컨트롤러 전체에 filter를 적용하는 방법
+@UseFilters(HttpExceptionFilter)
 export class CatsController {
 	constructor(private readonly catsService: CatsService) {
 
 	}
 
+	@ApiOperation({ summary: '현재 고양이 가져오기' })
 	@Get()
-	// @UseFilters(HttpExceptionFilter) // 특정 컨트롤러에 filter를 적용하는 방법
-	getAllCat() {
-		// 원하는 형식으로 예외처리를 오버라이딩 가능
-		// throw new HttpException({ success: false, message: 'api is broken' }, 401)
-		// 하지만 이 방식을 계속해서 붙여넣는 방식보다는 Filter를 사용하는 아래의 방식으로
-		throw new HttpException('api broken', 401);
+	getCurrentCat() {
+		return 'current cat';
 	}
 
-	@Get(':id')
-	getOneCat(@Param('id', ParseIntPipe) param: number) {
-		console.log(typeof (param)); // Param으로 받아온 인자는 string type 이다.
-		// 이 string으로 오는 type을 number로 사용하는 경우가 많다. -> ParseIntPipe를 사용해서 type 변환 가능
-		// 만약 위의 변환된 값이 숫자가 아니라 문자라면 Validation error를 발생시켜준다
-		return 'one cat';
-	}
-
+	@ApiResponse({
+		status: 500,
+		description: 'Server Error...',
+	})
+	@ApiResponse({
+		status: 200,
+		description: '성공!',
+		type: ReadOnlyCatDto
+	})
+	@ApiOperation({ summary: '회원가입' })
 	@Post()
-	createCat() {
-		return 'create cat';
+	async signUp(@Body() body: CatRequestDto) {
+		return await this.catsService.signUp(body);
 	}
 
-	@Put(':id')
-	updateCat() {
-		return 'update cat';
+	@ApiOperation({ summary: '로그인' })
+	@Post('login')
+	logIn() {
+		return 'login';
 	}
 
-	@Patch(':id')
-	updatePartialCat() {
-		return '  update';
+	@ApiOperation({ summary: '로그아웃' })
+	@Post('logout')
+	logOut() {
+		return 'logout';
 	}
 
-	@Delete(':id')
-	deleteCat() {
-		return 'delete service';
+	@ApiOperation({ summary: '고양이 이미지 업로드' })
+	@Post('upload/cats')
+	uploadCatImg() {
+		return 'uploadImg';
 	}
 
 }

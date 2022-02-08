@@ -1,3 +1,4 @@
+import { CatsRepository } from './cats.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Module } from '@nestjs/common';
 import { CatsController } from './cats.controller';
@@ -8,7 +9,7 @@ import { Cat, CatSchema } from './cats.schema';
 	// 스키마 등록
 	imports: [MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }])],
 	controllers: [CatsController],
-	providers: [CatsService],
+	providers: [CatsService, CatsRepository],
 	exports: [CatsService]
 })
 export class CatsModule { }

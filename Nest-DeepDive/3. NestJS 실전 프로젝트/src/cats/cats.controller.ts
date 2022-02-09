@@ -4,13 +4,16 @@ import { Controller, Delete, Get, HttpException, Patch, Post, Put, UseFilters, P
 import { HttpExceptionFilter } from 'src/http-exception.filter';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ReadOnlyCatDto } from './dto/cat.dto';
+import { AuthService } from 'src/auth/auth.service';
+import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
 
 @Controller('cats')
 @UseFilters(HttpExceptionFilter)
 export class CatsController {
-	constructor(private readonly catsService: CatsService) {
-
-	}
+	constructor(
+		private readonly catsService: CatsService,
+		private readonly authService: AuthService
+	) { }
 
 	@ApiOperation({ summary: '현재 고양이 가져오기' })
 	@Get()
@@ -35,8 +38,8 @@ export class CatsController {
 
 	@ApiOperation({ summary: '로그인' })
 	@Post('login')
-	logIn() {
-		return 'login';
+	logIn(@Body() data: LoginRequestDto) {
+		return this.authService.jwtLogIn(data);
 	}
 
 	@ApiOperation({ summary: '로그아웃' })

@@ -4,14 +4,16 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt/jwt.strategy';
 import { CatsModule } from 'src/cats/cats.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     PassportModule.register({ defaultStrategy: 'jwt', session: false }),
 
     // Jwt token을 만들어줌!
     JwtModule.register({
-      secret: 'secret',
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1y' },
     }),
 

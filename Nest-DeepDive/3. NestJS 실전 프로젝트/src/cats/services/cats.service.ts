@@ -1,10 +1,10 @@
-import { CatsRepository } from './cats.repository';
-import { CatRequestDto } from './dto/cats.request.dto';
 import { Injectable, HttpException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Cat } from './cats.schema';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt'
+import { Cat } from '../cats.schema';
+import { CatRequestDto } from '../dto/cats.request.dto';
+import { CatsRepository } from '../cats.repository';
 
 @Injectable()
 export class CatsService {
@@ -30,5 +30,19 @@ export class CatsService {
 
 		// 모든 필드를 return하는 것이 아니라 필요한 정보만 return
 		return cat.readOnlyData;
+
+	}
+
+	async uploadImg(cat: Cat, files: Express.Multer.File[]) {
+		const fileName = `cats/${files[0].filename}`;
+
+		console.log(fileName);
+
+		const newCat = await this.catsRepository.findByIdAndUpdateImg(
+			cat.id,
+			fileName,
+		);
+		console.log(newCat);
+		return newCat;
 	}
 }

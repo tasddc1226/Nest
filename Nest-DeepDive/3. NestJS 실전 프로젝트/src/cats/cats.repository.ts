@@ -36,4 +36,8 @@ export class CatsRepository {
 		console.log(newCat);
 		return newCat.readOnlyData; // readOnlyData로 필요한 정보만 필터링하여 return
 	}
+
+	async findAll() {
+		return await this.catModel.find();
+	}
 }

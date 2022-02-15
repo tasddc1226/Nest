@@ -21,6 +21,12 @@ export class CatsController {
 		private readonly authService: AuthService
 	) { }
 
+	@ApiOperation({ summary: '모든 고양이 가져오기' })
+	@Get('all')
+	getAllCat() {
+		return this.catsService.getAllCat();
+	}
+
 	@ApiOperation({ summary: '현재 고양이 가져오기' })
 	@UseGuards(JwtAuthGuard) // 컨트롤러에 도달하기 전 Guards를 거침
 	@Get()

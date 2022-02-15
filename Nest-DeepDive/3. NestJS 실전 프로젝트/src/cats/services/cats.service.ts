@@ -11,6 +11,12 @@ export class CatsService {
 	// Repository 의존성 주입
 	constructor(private readonly catsRepository: CatsRepository) { }
 
+	async getAllCat() {
+		const allCat = await this.catsRepository.findAll();
+		const readOnlyCats = allCat.map((cat) => cat.readOnlyData);
+		return readOnlyCats;
+	}
+
 	async signUp(body: CatRequestDto) {
 		const { email, name, password } = body;
 

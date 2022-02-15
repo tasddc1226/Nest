@@ -30,9 +30,7 @@ function Home() {
     <AppLayout>
       <XCatList>
         <Row gutter={10}>
-          {cats.map((cat) => (
-            <CatCard key={cat.id} cat={cat} />
-          ))}
+          {cats && cats.map((cat) => <CatCard key={cat.id} cat={cat} />)}
         </Row>
       </XCatList>
     </AppLayout>

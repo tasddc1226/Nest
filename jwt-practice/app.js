@@ -46,4 +46,4 @@ console.log(jwt);
 // 2. signature를 만들때 사용한 "secret_key"를 사이트의 VERIFY SIGNATURE 빈칸 부분에 입력, base64로 encoding 했기 때문에 체크박스 check
 // 3. 위에서 생성된 jwt를 좌측에 붙여넣기
 // 4. 아래쪽에 Signature Verified가 출력되어지면 성공
-// 5. 또한 HEADER와 PAYLOAD에 위에서 json 형태로 만들었던 것과 동일한지 확인 가능
+// 5. 또한 HEADER와 PAYLOAD에 위에서 json 형태로 만들었던 것과 동일한지 확인 가능!

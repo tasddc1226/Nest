@@ -1,9 +1,10 @@
+import { Comments, CommentsSchema } from './../comments/comments.schema';
 import { CatRequestDto } from './dto/cats.request.dto';
-import { HttpException, Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { Injectable } from "@nestjs/common";
+import { InjectModel } from '@nestjs/mongoose'
+import { Model, Types } from "mongoose";
 import { Cat } from "./cats.schema";
-
+import * as mongoose from 'mongoose';
 
 @Injectable()
 export class CatsRepository {
@@ -23,7 +24,8 @@ export class CatsRepository {
 		return cat;
 	}
 
-	async findCatByIdWithoutPassword(catId: string): Promise<Cat | null> {
+	// Types.ObjectId가 들어오는 경우 : author가 들어오는 경우
+	async findCatByIdWithoutPassword(catId: string | Types.ObjectId): Promise<Cat | null> {
 		// password를 제외한 feild의 data를 가져오기 위함
 		const cat = await this.catModel.findById(catId).select("-password"); // .select("email name"); 이메일과 이름만 가져오기
 		return cat;
@@ -38,6 +40,13 @@ export class CatsRepository {
 	}
 
 	async findAll() {
-		return await this.catModel.find();
+		// 스키마 모델 가져오기
+		const CommentsModel = mongoose.model('comments', CommentsSchema);
+
+		const result = await this.catModel
+			.find()
+			.populate('comments', CommentsModel); // 다른 document랑 이어주는 populate 메서드
+
+		return result;
 	}
 }

@@ -10,8 +10,11 @@ import { CommentsModule } from './comments/comments.module';
 import * as mongoose from "mongoose"
 
 @Module({
-  imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGODB_URI, {
-  }), CatsModule, AuthModule, CommentsModule],
+  imports: [
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGODB_URI, {
+      useCreateIndex: true,
+    }), CatsModule, AuthModule, CommentsModule],
   controllers: [AppController],
   providers: [AppService], // 공급자를 등록하는 부분
 })

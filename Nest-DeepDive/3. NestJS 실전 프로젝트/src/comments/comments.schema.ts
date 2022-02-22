@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Prop, Schema, SchemaFactory, SchemaOptions } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory, SchemaOptions } from '@nestjs/mongoose'
 import { IsNotEmpty, IsPositive, IsString } from 'class-validator';
 import { Document, Types } from 'mongoose';
 

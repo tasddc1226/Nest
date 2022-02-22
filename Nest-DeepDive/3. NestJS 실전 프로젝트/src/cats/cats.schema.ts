@@ -1,5 +1,6 @@
+import { Schema, SchemaOptions, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Comments } from './../comments/comments.schema';
 import { ApiProperty } from '@nestjs/swagger';
-import { Prop, Schema, SchemaFactory, SchemaOptions } from '@nestjs/mongoose';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { Document } from 'mongoose';
 
@@ -55,17 +56,35 @@ export class Cat extends Document {
 	@IsString()
 	imgUrl: string;
 
-	readonly readOnlyData: { id: string; email: string; name: string, imgUrl: string };
+	readonly readOnlyData: {
+		id: string;
+		email: string;
+		name: string;
+		imgUrl: string;
+	};
+
+	readonly comments: Comments[];
 }
 
-export const CatSchema = SchemaFactory.createForClass(Cat);
+const _CatSchema = SchemaFactory.createForClass(Cat);
 
-// Schema에 virtual이라는 메서드를 사용해서 필드 name으로 모델을 필요한 데이터만 전달해주기 위함
-CatSchema.virtual('readOnlyData').get(function (this: Cat) {
+_CatSchema.virtual('readOnlyData').get(function (this: Cat) {
 	return {
-		id: this.id, // this는 하나의 객체를 의미. 
+		id: this.id,
 		email: this.email,
 		name: this.name,
-		imgUrl: this.imgUrl
-	}
-})
+		imgUrl: this.imgUrl,
+		comments: this.comments,
+	};
+});
+
+// comments라는 virtual feild를 만듦으로써 다른 documents와 연결을 할 수 있다
+_CatSchema.virtual('comments', {
+	ref: 'comments',
+	localField: '_id',
+	foreignField: 'info',
+});
+_CatSchema.set('toObject', { virtuals: true });
+_CatSchema.set('toJSON', { virtuals: true });
+
+export const CatSchema = _CatSchema;

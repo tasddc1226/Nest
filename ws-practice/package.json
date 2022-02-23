@@ -1,0 +1,20 @@
+{
+  "name": "ws-practice",
+  "version": "1.0.0",
+  "description": "web-socket-practice",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "start:dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3",
+    "ws": "^8.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}

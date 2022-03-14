@@ -12,6 +12,7 @@ import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/common/utils/multer.options';
 import { CatsService } from '../services/cats.service';
+import { PositiveIntPipe } from 'src/common/pipes/positiveInt.pipe';
 
 @Controller('cats')
 @UseFilters(HttpExceptionFilter)
@@ -32,6 +33,11 @@ export class CatsController {
 	@Get()
 	getCurrentCat(@CurrentUser() cat: Cat) { // 커스텀 데코레이터 적용
 		return cat.readOnlyData; //req.user;
+	}
+
+	@Get(':id')
+	getOneCat(@Param('id', ParseIntPipe, PositiveIntPipe) param: number) {
+		return 'get one cat api'
 	}
 
 	@ApiResponse({

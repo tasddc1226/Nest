@@ -3,7 +3,7 @@ import { Request } from 'express';
 import { JwtAuthGuard } from '../../auth/jwt/jwt.guard';
 import { CatRequestDto } from '../dto/cats.request.dto';
 import { Controller, Delete, Get, HttpException, Patch, Post, Put, UseFilters, Param, ParseIntPipe, Body, UseGuards, Req, UseInterceptors, UploadedFiles } from '@nestjs/common';
-import { HttpExceptionFilter } from 'src/http-exception.filter';
+import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ReadOnlyCatDto } from '../dto/cat.dto';
 import { AuthService } from 'src/auth/auth.service';
@@ -13,8 +13,10 @@ import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/common/utils/multer.options';
 import { CatsService } from '../services/cats.service';
 import { PositiveIntPipe } from 'src/common/pipes/positiveInt.pipe';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 
 @Controller('cats')
+@UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
 export class CatsController {
 	constructor(
@@ -37,7 +39,8 @@ export class CatsController {
 
 	@Get(':id')
 	getOneCat(@Param('id', ParseIntPipe, PositiveIntPipe) param: number) {
-		return 'get one cat api'
+		console.log('hello controller')
+		return { cats:'get one cat api' };
 	}
 
 	@ApiResponse({

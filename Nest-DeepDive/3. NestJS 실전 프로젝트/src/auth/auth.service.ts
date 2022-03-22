@@ -32,9 +32,9 @@ export class AuthService {
 		const payload = { email: email, sub: cat.id }; // sub : token의 제목을 의미
 
 		return {
-			data: {
-				token: this.jwtService.sign(payload), // payload를 이용해서 서명한 것을 리턴
-			}
+			
+			token: this.jwtService.sign(payload), // payload를 이용해서 서명한 것을 리턴
+			
 		};
 	}
 

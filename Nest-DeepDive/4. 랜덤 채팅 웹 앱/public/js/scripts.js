@@ -25,11 +25,19 @@ const drawUserName = (username) => {
   helloStrangerElem.innerHTML = `소환사 ${username} 님! 어서오세요.`;
 };
 
-const drawNewChat = (message) => {
+const drawNewChat = (message, isMe = false) => {
   const wrapperChatBox = document.createElement('div');
-  const chatBox = `
-    <div>${message}</div>
-  `;
+  wrapperChatBox.className = 'clearfix';
+  let chatBox;
+  if (!isMe) {
+    chatBox = `
+        <div class='bg-gray-300 w-3/4 mx-4 my-2 p-2 rounded-lg clearfix break-all'>${message}</div>
+    `;
+  } else {
+    chatBox = `
+        <div class='bg-white w-1/2 ml-auto mr-4 my-2 p-2 rounded-lg clearfix break-all text-right'>${message}</div>
+    `;
+  }
   wrapperChatBox.innerHTML = chatBox;
   chattingBoxElem.append(wrapperChatBox);
 };
@@ -41,7 +49,7 @@ const handleSubmit = (event) => {
   const inputValue = event.target.elements[0].value;
   if (inputValue !== '') {
     socket.emit('submit_chat', inputValue);
-    drawNewChat(`Me : ${inputValue}`);
+    drawNewChat(`Me : ${inputValue}`, true);
     formElem.reset();
   }
 };

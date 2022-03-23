@@ -1,4 +1,8 @@
+import { Model } from 'mongoose';
+import { Chatting } from './models/chattings.model';
+import { Socket as SocketModel } from './models/sockets.model';
 import { Logger } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
 import {
   ConnectedSocket,
   MessageBody,
@@ -16,7 +20,11 @@ export class ChatsGateway
 {
   private logger = new Logger('chat');
 
-  constructor() {
+  constructor(
+    @InjectModel(Chatting.name) private readonly chattingModel: Model<Chatting>,
+    @InjectModel(SocketModel.name)
+    private readonly socketModel: Model<SocketModel>,
+  ) {
     this.logger.log('constructor');
   }
 
@@ -31,18 +39,33 @@ export class ChatsGateway
   }
 
   // client와 connection이 끊기면 실행하는 함수
-  handleDisconnect(@ConnectedSocket() socket: Socket) {
-    this.logger.log(`user disconnected : ${socket.id} ${socket.nsp.name}`);
+  async handleDisconnect(@ConnectedSocket() socket: Socket) {
+    const user = await this.socketModel.findOne({ id: socket.id });
+    if (user) {
+      socket.broadcast.emit('disconnect_user', user.username);
+      await user.delete();
+      this.logger.log(`user disconnected : ${socket.id} ${socket.nsp.name}`);
+    }
   }
 
   // 새로운 유저 입장시 실행하는 함수
   @SubscribeMessage('new_user')
-  handleNewUser(
+  async handleNewUser(
     @MessageBody() username: string,
     @ConnectedSocket() socket: Socket,
   ) {
-    console.log(username);
-    // TODO: username DB save
+    const isExist = await this.socketModel.exists({ username });
+    console.log(username, isExist);
+
+    if (isExist) {
+      username = `${username}_${Math.floor(Math.random() * 100)}`;
+    }
+
+    // username DB save
+    await this.socketModel.create({
+      id: socket.id,
+      username,
+    });
 
     // 연결된 모든 socket에게 data 전송
     socket.broadcast.emit('user_connected', username);
@@ -51,13 +74,21 @@ export class ChatsGateway
 
   // 새로운 채팅 broadcast
   @SubscribeMessage('submit_chat')
-  handleSubmitChat(
+  async handleSubmitChat(
     @MessageBody() chat: string,
     @ConnectedSocket() socket: Socket,
   ) {
+    const socketObj = await this.socketModel.findOne({ id: socket.id });
+
+    // 특정 user의 채팅 기록을 남긴다.
+    await this.chattingModel.create({
+      user: socketObj,
+      chat: chat,
+    });
+
     socket.broadcast.emit('new_chat', {
       chat,
-      username: socket.id,
+      username: socketObj.username,
     });
   }
 }

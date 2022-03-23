@@ -13,12 +13,16 @@ socket.on('user_connected', (username) => {
 
 socket.on('new_chat', (data) => {
   const { chat, username } = data;
-  drawNewChat(`${username}: ${chat}`);
+  drawNewChat(`${username} : ${chat}`);
 });
+
+socket.on('disconnect_user', (username) =>
+  drawNewChat(`${username}님이 떠났습니다..`),
+);
 
 // ========= Draw functions =========
 const drawUserName = (username) => {
-  helloStrangerElem.innerHTML = `반가운 소환사 ${username} 님!`;
+  helloStrangerElem.innerHTML = `소환사 ${username} 님! 어서오세요.`;
 };
 
 const drawNewChat = (message) => {

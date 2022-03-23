@@ -35,18 +35,29 @@ export class ChatsGateway
     this.logger.log(`user disconnected : ${socket.id} ${socket.nsp.name}`);
   }
 
+  // 새로운 유저 입장시 실행하는 함수
   @SubscribeMessage('new_user')
   handleNewUser(
     @MessageBody() username: string,
     @ConnectedSocket() socket: Socket,
   ) {
     console.log(username);
-    // username DB save
+    // TODO: username DB save
 
     // 연결된 모든 socket에게 data 전송
     socket.broadcast.emit('user_connected', username);
-    // console.log(socket.id);
-    // socket.emit('hello_user', 'hello ' + username); // server -> client
-    return username;
+    return username; // server -> client
+  }
+
+  // 새로운 채팅 broadcast
+  @SubscribeMessage('submit_chat')
+  handleSubmitChat(
+    @MessageBody() chat: string,
+    @ConnectedSocket() socket: Socket,
+  ) {
+    socket.broadcast.emit('new_chat', {
+      chat,
+      username: socket.id,
+    });
   }
 }

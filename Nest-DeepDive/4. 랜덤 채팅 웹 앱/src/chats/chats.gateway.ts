@@ -6,7 +6,7 @@ import {
 } from '@nestjs/websockets';
 import { Socket } from 'dgram';
 
-@WebSocketGateway()
+@WebSocketGateway({ namespace: 'chattings' })
 export class ChatsGateway {
   @SubscribeMessage('new_user')
   handleNewUser(
@@ -14,6 +14,7 @@ export class ChatsGateway {
     @ConnectedSocket() socket: Socket,
   ) {
     console.log(username);
+    // console.log(socket.id);
     socket.emit('hello_user', 'hello ' + username); // server -> client
   }
 }

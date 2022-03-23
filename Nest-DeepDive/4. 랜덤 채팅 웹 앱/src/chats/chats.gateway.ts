@@ -41,7 +41,12 @@ export class ChatsGateway
     @ConnectedSocket() socket: Socket,
   ) {
     console.log(username);
+    // username DB save
+
+    // 연결된 모든 socket에게 data 전송
+    socket.broadcast.emit('user_connected', username);
     // console.log(socket.id);
-    socket.emit('hello_user', 'hello ' + username); // server -> client
+    // socket.emit('hello_user', 'hello ' + username); // server -> client
+    return username;
   }
 }

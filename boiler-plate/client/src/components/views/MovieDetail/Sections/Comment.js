@@ -21,6 +21,11 @@ function Comment(props) {
       movieId: props.movieId,
     }
 
+    if (variables.content === '') {
+      alert('댓글 작성해주세요..!')
+      return
+    }
+
     axios.post('/api/comment/saveComment', variables).then((response) => {
       if (response.data.success) {
         console.log(response.data.result)

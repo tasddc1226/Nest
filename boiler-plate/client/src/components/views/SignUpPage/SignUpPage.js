@@ -29,16 +29,20 @@ function SignUpPage(props) {
 
   const onSubmitHandler = (evnet) => {
     evnet.preventDefault(); // page refresh 막아주기
-
-    if (Password !== ConfirmPassword) {
-      return alert("비밀번호가 다릅니다.");
-    }
-
+    
     let body = {
       email: Email,
       name: Name,
       password: Password,
     };
+
+    if (body.email === '' || body.name === '' || body.password === '') {
+      return alert("정보를 입력하세요..!")
+    }
+
+    if (Password !== ConfirmPassword) {
+      return alert("입력한 두 비밀번호가 다릅니다.");
+    }
 
     dispatch(signupUser(body)).then((response) => {
       if (response.payload.success) {

@@ -6,7 +6,8 @@ const { User } = require("../models/User");
 router.post("/signup", (req, res) => {
   // 정보 추출 후 DB에 넣어주기
   const user = new User(req.body);
-
+  console.log(user);
+  
   user.save((err, doc) => {
     if (err) return res.json({ success: false, err });
     return res.status(200).json({
